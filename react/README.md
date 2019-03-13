@@ -45,7 +45,7 @@ Mit folgenden Befehlen erzeugen wir das React Native Projekt namens "Projektarbe
 expo init Projektarbeit
 ```
 
-Nicht vergessen das template **tabs** auszuwählen.
+Nicht vergessen das template **blank** auszuwählen. Dadurch wird ein leeres Projekt erstellt.
 Als "name" wird "Raumbuch" eingetragen.
 
 Starten des Development Servers
