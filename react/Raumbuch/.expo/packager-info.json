@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 62366,
-  "expoServerNgrokUrl": "https://cs-878.anonymous.raumbuch.exp.direct",
-  "packagerNgrokUrl": "https://packager.cs-878.anonymous.raumbuch.exp.direct",
-  "ngrokPid": 62380,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }

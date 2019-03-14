@@ -9,7 +9,7 @@ const HomeStack = createStackNavigator({Home: HomeScreen});
 
 HomeStack.navigationOptions = {
     tabBarLabel: 'Home',
-    tabBarIcon: ({focused}) => (<TabBarIcon focused={focused} name={'md-information-circle'}/>)
+    tabBarIcon: ({focused}) => (<TabBarIcon focused={focused} name={' md-information-circle'}/>)
 };
 
 export default createBottomTabNavigator({HomeStack});
