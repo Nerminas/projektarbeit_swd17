@@ -1,5 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
+import Counter from '../components/Counter';
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -13,6 +14,10 @@ export default class HomeScreen extends React.Component {
                 <Image
                     source={require('../assets/images/logo.png')}
                     style={styles.welcomeImage}/>
+                <Counter color={'lightblue'} size={16}/>
+                <Counter color={'skyblue'} size={32}/>
+                <Counter color={'steelblue'} size={80}/>
+                <Counter color={'darkblue'} size={140}/>
             </View>
         )
     }
