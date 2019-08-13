@@ -1,8 +1,8 @@
 import React from 'react';
-import HomeScreen from './screens/HomeScreen';
+import BmiCalculator from './screens/BmiCalculator';
 
 export default class App extends React.Component {
   render() {
-    return (< HomeScreen />);
+    return (<BmiCalculator/>);
   }
 };
