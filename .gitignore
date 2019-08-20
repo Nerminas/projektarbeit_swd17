@@ -284,6 +284,9 @@ buck-out
 # Watchman
 .watchmanconfig
 
+# Expo
+.expo
+
 # Android
 .idea
 .gradle
