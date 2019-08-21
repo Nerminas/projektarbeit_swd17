@@ -4,6 +4,11 @@ import { StyleSheet, StatusBar, Platform, SafeAreaView } from 'react-native';
 import { Container, Text } from 'native-base';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
+import HomeScreen from './app/views/HomeScreen';
+import ProjectView from './app/views/ProjectView';
+import DetailScreen from './app/views/DetailScreen';
+
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 export default class App extends React.Component{
   constructor(props){
@@ -28,15 +33,26 @@ export default class App extends React.Component{
     }
     console.log('Running on ' + Platform.OS + ' Current height: ' +
       StatusBar.currentHeight);
-    return (
-      <SafeAreaView style={styles.safeArea}>
-        <Container style={styles.container}>
-          <Text>Neue App .</Text>
-        </Container>
-      </SafeAreaView>
-    );
+    /*return (
+     <SafeAreaView style={styles.safeArea}>
+     <Container style={styles.container}>
+     <AppContainer/>;
+     </Container>
+     </SafeAreaView>
+     );*/
+    return <AppContainer/>;
   }
 }
+
+const AppNavigator = createStackNavigator(
+  {
+    //Home: HomeScreen,
+    Home: ProjectView,
+    Details: DetailScreen,
+  },
+  {initialRouteName: 'Home'});
+
+const AppContainer = createAppContainer(AppNavigator);
 
 const styles = StyleSheet.create({
   safeArea: {

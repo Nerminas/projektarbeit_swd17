@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, ScrollView, Text, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-export default class BmiCalculator extends React.Component{
+export default class HomeScreen extends React.Component{
   constructor(props){
     super(props);
     this.state = {

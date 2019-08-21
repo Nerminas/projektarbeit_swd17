@@ -1,0 +1,14 @@
+{
+  "Project David":{
+    "name":"David",
+    "adress":"Mahrensdorf",
+    "customerNumber":"1234",
+    "phone":"2341"
+  },
+  "Project Anja":{
+    "name":"Anja",
+    "adress":"Fehring",
+    "customerNumber":"8973",
+    "phone":"0000"
+  }
+}
