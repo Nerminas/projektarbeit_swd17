@@ -1,18 +1,14 @@
 import HomeScreen from './app/views/HomeScreen';
-import ProjectView from './app/views/ProjectView';
-import DetailScreen from './app/views/DetailScreen';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
-const navigator = createStackNavigator(
+const StackNavigator = createStackNavigator(
   {
     Home: HomeScreen,
-    Projects: ProjectView,
-    Details: DetailScreen,
   },
   {
     initialRouteName: 'Home',
-    defaultNavigationOptions: {title: 'App'},
+    defaultNavigationOptions: {title: 'Raumbuch', },
   });
 
-export default createAppContainer(navigator);
+export default createAppContainer(StackNavigator);
 
