@@ -1,5 +1,8 @@
+import React from 'react';
 import HomeScreen from './app/views/HomeScreen';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { Icon, SearchBar, Button } from 'react-native-elements';
+import { View} from 'react-native';
 
 const StackNavigator = createStackNavigator(
   {
@@ -7,7 +10,14 @@ const StackNavigator = createStackNavigator(
   },
   {
     initialRouteName: 'Home',
-    defaultNavigationOptions: {title: 'Raumbuch', },
+    defaultNavigationOptions: {
+      title: 'Projekte',
+      header: (
+          <SearchBar
+            onChangeText={p => {return console.log(p)}}
+          />),
+      headerRight: ( <Button title={"Test"}/>)
+    },
   });
 
 export default createAppContainer(StackNavigator);

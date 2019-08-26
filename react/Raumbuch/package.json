@@ -25,6 +25,7 @@
 		"react-navigation-material-bottom-tabs": "^1.0.0"
 	},
 	"devDependencies": {
+		"@expo/vector-icons": "^10.0.5",
 		"babel-cli": "^6.26.0",
 		"babel-preset-expo": "^5.0.0",
 		"babel-preset-flow": "^6.23.0",

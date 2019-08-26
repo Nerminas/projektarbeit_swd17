@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
+import { Icon, SearchBar } from 'react-native-elements';
 import { Text } from 'native-base';
-import { StyleSheet, FlatList, View, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  FlatList,
+  View,
+  Dimensions,
+  TouchableWithoutFeedback,
+  Button,
+} from 'react-native';
 import { Card, CardItem, Container, Body } from 'native-base';
-import { SearchBar } from 'react-native-elements';
 
 import data from '../assets/files/data';
+import { Ionicons } from '@expo/vector-icons';
+import FlatListItem from '../components/FlatListItem';
 
 const projectList = [
   {
@@ -84,7 +93,7 @@ class ProjectScreen extends React.Component{
   state = {
     projects: projectList,
     filteredProjects: projectList,
-    search : ''
+    search: '',
   };
 
   renderItem = ({item, index}) => {
@@ -92,43 +101,32 @@ class ProjectScreen extends React.Component{
       return <View style={[styles.item, styles.itemInvisible]}/>;
     }
     return (
-      <Card style={styles.item}>
-        <CardItem header>
-          <Text>{item.name}</Text>
-        </CardItem>
-        <CardItem>
-          <Body>
-            <Text>Name: {item.name}</Text>
-            <Text>Adresse: {item.address}</Text>
-            <Text>Kunde: {item.site}</Text>
-            <Text>Telefon: {item.phone}</Text>
-          </Body>
-        </CardItem>
-      </Card>
+      <FlatListItem item={item} columnCount={columns} style={styles.item}/>
     );
   };
 
   searchFunction = searchString => {
     if (searchString !== ''){
       console.log(searchString);
-      let found = this.state.projects.filter(p => p.name.indexOf(searchString) !== -1);
+      let found = this.state.projects.filter(
+        p => p.name.indexOf(searchString) !== -1);
       this.setState({filteredProjects: found});
-      this.setState( {search: searchString})
+      this.setState({search: searchString});
     } else{
       this.setState({filteredProjects: this.state.projects});
       this.setState({search: ''});
     }
-  }
+  };
 
   render(){
     return (
       <Container>
         <SearchBar
-        onChangeText={this.searchFunction}
-        value={this.state.search}
-        cancelIcon={true}
-        lightTheme={true}
-        round={true}/>
+          onChangeText={this.searchFunction}
+          value={this.state.search}
+          cancelIcon={true}
+          lightTheme={true}
+          round={true}/>
         <FlatList
           data={formatData(this.state.filteredProjects, columns)}
           style={styles.container}
@@ -148,11 +146,9 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: 'column',
     alignItems: 'center',
-    //justifyContent: 'center',
     flex: 1,
     margin: 5,
-    //height:100,
-    height: Dimensions.get('window').width / columns, // approximate a square
+    height: Dimensions.get('window').width / columns,
   },
   itemInvisible: {
     backgroundColor: 'transparent',
