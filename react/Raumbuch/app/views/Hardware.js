@@ -7,7 +7,7 @@ import {
 class Hardware extends React.Component {
   render() {
     return(
-      <Text>Hardware</Text>
+      <Text>{this.props.navigation.getParam('data', 'Default')}</Text>
     )
   }
 }

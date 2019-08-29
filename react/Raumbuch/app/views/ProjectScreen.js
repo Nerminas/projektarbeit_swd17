@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { Icon, SearchBar } from 'react-native-elements';
-import { Text } from 'native-base';
 import {
   StyleSheet,
   FlatList,
   View,
   Dimensions,
   TouchableWithoutFeedback,
-  Button,
+  Button, TouchableOpacity,
 } from 'react-native';
-import { Card, CardItem, Container, Body } from 'native-base';
-
+import { Col, Row, Card, CardItem, Container, Body } from 'native-base';
 import data from '../assets/files/data';
-import { Ionicons } from '@expo/vector-icons';
 import FlatListItem from '../components/FlatListItem';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import CreateProjectComponent from '../components/CreateProjectComponent';
 
 const projectList = [
   {
@@ -76,6 +75,8 @@ const projectList = [
 
 const columns = 2;
 
+let nav;
+
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
 
@@ -94,6 +95,7 @@ class ProjectScreen extends React.Component{
     projects: projectList,
     filteredProjects: projectList,
     search: '',
+    addProjectPressed: false,
   };
 
   renderItem = ({item, index}) => {
@@ -101,9 +103,21 @@ class ProjectScreen extends React.Component{
       return <View style={[styles.item, styles.itemInvisible]}/>;
     }
     return (
-      <FlatListItem item={item} columnCount={columns} style={styles.item}/>
+      <FlatListItem nav={nav} item={item} columnCount={columns}
+                    style={styles.item}/>
     );
   };
+
+  addProject(project){
+    this.setState({
+      project: [...this.state.projects, project],
+    });
+  }
+
+  isProjectModalVisible(isVisible){
+    console.log('isProjectModalVisible: ' + isVisible);
+    this.setState({addProjectPressed: isVisible});
+  }
 
   searchFunction = searchString => {
     if (searchString !== ''){
@@ -119,29 +133,80 @@ class ProjectScreen extends React.Component{
   };
 
   render(){
+    nav = this.props.navigation;
+
     return (
       <Container>
-        <SearchBar
-          onChangeText={this.searchFunction}
-          value={this.state.search}
-          cancelIcon={true}
-          lightTheme={true}
-          round={true}/>
-        <FlatList
-          data={formatData(this.state.filteredProjects, columns)}
+        <Row style={styles.rowStyle}>
+          <Col style={{width: '80%'}}>
+            <SearchBar
+              onChangeText={this.searchFunction}
+              value={this.state.search}
+              cancelIcon={true}
+              lightTheme={true}
+              round={true}
+              containerStyle={styles.searchViewContainerStyle}
+              inputContainerStyle={styles.searchViewInputContainerStyle}
+              //placeholderTextColor={'white'}
+              placeholder={'Search Project'}
+            />
+          </Col>
+          <Col style={styles.colButtonContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                {this.isProjectModalVisible(true);}
+              }}>
+              <AntDesign style={{color: '#ceefcc'}} name={'addfolder'}
+                         size={30}/>
+            </TouchableOpacity>
+          </Col>
+        </Row>
+        < FlatList
+          data={formatData(this.state.filteredProjects, columns,
+          )
+          }
           style={styles.container}
           renderItem={this.renderItem}
           numColumns={columns}
-        /></Container>
+        />
+        {this.state.addProjectPressed
+          ? <CreateProjectComponent
+            isProjectModalVisible={this.isProjectModalVisible.bind(this)}
+            addProject={this.addProject}
+            isVisible={this.state.addProjectPressed}/>
+          : null}
+      </Container>
 
-    );
+    )
+      ;
   };
 }
 
 const styles = StyleSheet.create({
+  rowStyle: {
+    marginTop: 28,
+    height: 58,
+    backgroundColor: 'black',
+  },
+  colButtonContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#6cd166',
+    height: 58,
+  },
+  searchViewInputContainerStyle: {
+    backgroundColor: '#ceefcc',
+  },
+  searchViewContainerStyle: {
+    backgroundColor: '#6cd166',
+    borderBottomColor: 'transparent',
+    borderTopColor: 'transparent',
+  },
+  searchContainer: {},
   container: {
     flex: 1,
-    marginVertical: 10,
+    paddingTop: 5,
+    backgroundColor: '#ceefcc',
   },
   item: {
     flexDirection: 'column',

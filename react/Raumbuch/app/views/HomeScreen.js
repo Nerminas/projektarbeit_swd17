@@ -16,9 +16,6 @@ const TabNavigator = createBottomTabNavigator(
         tabBarIcon: ({tintColor}) => {
           return <Icon name="home" size={30} color={tintColor}/>;
         },
-      }, tabBarOptions: {
-        activeTintColor: 'green',
-        inactiveTintColor: 'grey',
       },
     },
     Tab2: {
@@ -39,7 +36,15 @@ const TabNavigator = createBottomTabNavigator(
         },
       },
     },
-  },
+  }, {
+    tabBarOptions: {
+      activeTintColor: '#ceefcc',
+      inactiveTintColor: 'grey',
+      activeBackgroundColor: '#6cd166',
+      inactiveBackgroundColor: '#ceefcc',
+
+    },
+  }
 );
 
 const HomeScreen = () => {

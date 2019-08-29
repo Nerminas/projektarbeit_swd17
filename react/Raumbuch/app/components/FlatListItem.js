@@ -3,23 +3,27 @@ import { Body, Card, CardItem, Text } from 'native-base';
 import {
   Button,
   Dimensions,
-  StyleSheet,
+  StyleSheet, TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Feather, EvilIcons } from '@expo/vector-icons';
 
 let columns = 0;
 
-const FlatListItem = ({item, columnCount, style}) => {
+const FlatListItem = ({nav, item, columnCount, style}) => {
   columns = columnCount;
   return (
-    <TouchableWithoutFeedback onPress={p => {console.log(item.name);}}>
+    <TouchableWithoutFeedback onPress={p => {nav.navigate('Tab2', {
+      data : "Test Data"
+    })}}>
       <Card style={style}>
         <CardItem header>
-          <Button raised
-                  title={'Edit Button'}
-                  onPress={p => {console.log('test');}}/>
           <Text>{item.name}</Text>
+          <TouchableOpacity
+            style={{marginLeft:50}}
+            onPress={p => {console.log('Edit ' + item.name)}}>
+            <Feather name={'edit'} size={30}/>
+          </TouchableOpacity>
         </CardItem>
         <CardItem>
           <Body>
