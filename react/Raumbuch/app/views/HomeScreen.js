@@ -44,13 +44,13 @@ const TabNavigator = createBottomTabNavigator(
       inactiveBackgroundColor: '#ceefcc',
 
     },
-  }
+  },
 );
 
 const HomeScreen = () => {
   const NavContainer = createAppContainer(TabNavigator);
   return (
-    <NavContainer/>
+      <NavContainer/>
   );
 };
 

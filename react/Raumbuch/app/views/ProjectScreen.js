@@ -18,58 +18,66 @@ const projectList = [
   {
     key: '1',
     name: 'David',
+    customernumber: '123456',
     address: 'Mahrensdorfkjhkjhkjhkhk',
-    site: '1234',
     phone: '2341',
+    email: '1234',
   },
   {
     key: '2',
     name: 'DiAnja',
+    customernumber: '123456',
     address: 'Test',
-    site: '1234',
     phone: '2341',
+    email: '1234',
   },
   {
     key: '3',
     name: 'Enja',
+    customernumber: '123456',
     address: 'Test',
-    site: '1234',
     phone: '2341',
+    email: '1234',
   },
   {
     key: '4',
     name: 'Anja',
+    customernumber: '123456',
     address: 'Test',
-    site: '1234',
     phone: '2341',
+    email: '1234',
   },
   {
     key: '5',
     name: 'Anja',
+    customernumber: '123456',
     address: 'Test',
-    site: '1234',
     phone: '2341',
+    email: '1234',
   },
   {
     key: '6',
     name: 'Anja',
+    customernumber: '123456',
     address: 'Test',
-    site: '1234',
     phone: '2341',
+    email: '1234',
   },
   {
     key: '7',
     name: 'Anja',
+    customernumber: '123456',
     address: 'Test',
-    site: '1234',
     phone: '2341',
+    email: '1234',
   },
   {
     key: '8',
     name: 'Anita',
+    customernumber: '123456',
     address: 'Test',
-    site: '1234',
     phone: '2341',
+    email: '1234',
   },
 ];
 
@@ -103,8 +111,7 @@ class ProjectScreen extends React.Component{
       return <View style={[styles.item, styles.itemInvisible]}/>;
     }
     return (
-      <FlatListItem nav={nav} item={item} columnCount={columns}
-                    style={styles.item}/>
+      <FlatListItem nav={nav} item={item} columnCount={columns}/>
     );
   };
 
@@ -184,7 +191,6 @@ class ProjectScreen extends React.Component{
 
 const styles = StyleSheet.create({
   rowStyle: {
-    marginTop: 28,
     height: 58,
     backgroundColor: 'black',
   },
@@ -207,13 +213,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 5,
     backgroundColor: '#ceefcc',
-  },
-  item: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    flex: 1,
-    margin: 5,
-    height: Dimensions.get('window').width / columns,
   },
   itemInvisible: {
     backgroundColor: 'transparent',
