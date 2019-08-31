@@ -19,7 +19,7 @@ const reducer = (state, action) => {
     case 'name':
       return {...state, name: action.payload};
     case 'customernumber':
-      return {...state, customernumber: action.payload};
+      return {...state, customernumber: action.payload, key: action.payload};
     case 'adress':
       return {...state, adress: action.payload};
     case 'phone':
@@ -31,13 +31,12 @@ const reducer = (state, action) => {
   }
 };
 
-const CreateProjectComponent = ({isProjectModalVisible, isVisible}) => {
+const CreateProjectComponent = ({isProjectModalVisible, isVisible, addProject}) => {
 
   const [state, dispatch] = useReducer(reducer,
-    {name: '', customernumber: '', adress: '', phone: '', email: ''});
-  const [storedProject, setStoredProject] = useState('');
+    {key: '', name: '', customernumber: '', adress: '', phone: '', email: ''});
 
-  const {name, customernumber, adress, phone, email} = state;
+  const {key, name, customernumber, adress, phone, email} = state;
 
   return (
     <View>
@@ -104,7 +103,10 @@ const CreateProjectComponent = ({isProjectModalVisible, isVisible}) => {
                           then(async(item) => {
                             if (item){
                               await storeProject(state).
-                                then(() => isProjectModalVisible(false));
+                                then(() => {
+                                  addProject(state);
+                                  isProjectModalVisible(false)
+                                });
                             }
                           });
                       }}>Speichern</Text>
@@ -128,10 +130,7 @@ const validateEntry = async(key) => {
   } else{
     await loadProject(key).then((item) => {
       valid = item === null;
-      if (valid){
-        console.log(
-          'Not entry found for key: ' + key + '. Going to store data.');
-      } else{
+      if (!valid){
         console.log(
           'Store not valid. Value already exists for key: ' + key + ': ' +
           item);

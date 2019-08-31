@@ -1,87 +1,20 @@
-import React, { useState } from 'react';
-import { Icon, SearchBar } from 'react-native-elements';
+import React from 'react';
+import { SearchBar } from 'react-native-elements';
 import {
   StyleSheet,
   FlatList,
   View,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Button, TouchableOpacity,
+  ActivityIndicator,
+  TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
 import { Col, Row, Card, CardItem, Container, Body } from 'native-base';
-import data from '../assets/files/data';
 import FlatListItem from '../components/FlatListItem';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CreateProjectComponent from '../components/CreateProjectComponent';
 
-const projectList = [
-  {
-    key: '1',
-    name: 'David',
-    customernumber: '123456',
-    address: 'Mahrensdorfkjhkjhkjhkhk',
-    phone: '2341',
-    email: '1234',
-  },
-  {
-    key: '2',
-    name: 'DiAnja',
-    customernumber: '123456',
-    address: 'Test',
-    phone: '2341',
-    email: '1234',
-  },
-  {
-    key: '3',
-    name: 'Enja',
-    customernumber: '123456',
-    address: 'Test',
-    phone: '2341',
-    email: '1234',
-  },
-  {
-    key: '4',
-    name: 'Anja',
-    customernumber: '123456',
-    address: 'Test',
-    phone: '2341',
-    email: '1234',
-  },
-  {
-    key: '5',
-    name: 'Anja',
-    customernumber: '123456',
-    address: 'Test',
-    phone: '2341',
-    email: '1234',
-  },
-  {
-    key: '6',
-    name: 'Anja',
-    customernumber: '123456',
-    address: 'Test',
-    phone: '2341',
-    email: '1234',
-  },
-  {
-    key: '7',
-    name: 'Anja',
-    customernumber: '123456',
-    address: 'Test',
-    phone: '2341',
-    email: '1234',
-  },
-  {
-    key: '8',
-    name: 'Anita',
-    customernumber: '123456',
-    address: 'Test',
-    phone: '2341',
-    email: '1234',
-  },
-];
-
 const columns = 2;
+const allLocalProjects = [];
 
 let nav;
 
@@ -98,12 +31,38 @@ const formatData = (data, numColumns) => {
   return data;
 };
 
+const loadAllProjects = async() => {
+
+};
+
 class ProjectScreen extends React.Component{
   state = {
-    projects: projectList,
-    filteredProjects: projectList,
+    projects: [],
+    filteredProjects: [],
     search: '',
     addProjectPressed: false,
+    isLoading: true,
+  };
+
+  componentDidMount(){
+    loadAllProjects().then(() => {
+        AsyncStorage.getAllKeys().then((keys) => {
+          keys.map(async(key) => {
+            await AsyncStorage.getItem(key).then((item) => {
+              //allLocalProjects.push(JSON.parse(item));
+              this.setState(
+                {projects: [...this.state.projects, JSON.parse(item)]});
+              this.setState({
+                filteredProjects: [
+                  ...this.state.filteredProjects,
+                  JSON.parse(item)],
+              });
+            });
+          });
+        });
+        this.setState({isLoading: false});
+      },
+    );
   };
 
   renderItem = ({item, index}) => {
@@ -115,20 +74,23 @@ class ProjectScreen extends React.Component{
     );
   };
 
-  addProject(project){
+  addProject = (project) => {
     this.setState({
-      project: [...this.state.projects, project],
+      projects: [...this.state.projects, project],
     });
-  }
+    if (this.state.search === ''){
+      this.setState({
+        filteredProjects: [...this.state.filteredProjects, project],
+      });
+    }
+  };
 
-  isProjectModalVisible(isVisible){
-    console.log('isProjectModalVisible: ' + isVisible);
+  isProjectModalVisible = (isVisible) => {
     this.setState({addProjectPressed: isVisible});
-  }
+  };
 
-  searchFunction = searchString => {
+  searchFunction = (searchString) => {
     if (searchString !== ''){
-      console.log(searchString);
       let found = this.state.projects.filter(
         p => p.name.indexOf(searchString) !== -1);
       this.setState({filteredProjects: found});
@@ -142,84 +104,98 @@ class ProjectScreen extends React.Component{
   render(){
     nav = this.props.navigation;
 
-    return (
-      <Container>
-        <Row style={styles.rowStyle}>
-          <Col style={{width: '80%'}}>
-            <SearchBar
-              onChangeText={this.searchFunction}
-              value={this.state.search}
-              cancelIcon={true}
-              lightTheme={true}
-              round={true}
-              containerStyle={styles.searchViewContainerStyle}
-              inputContainerStyle={styles.searchViewInputContainerStyle}
-              //placeholderTextColor={'white'}
-              placeholder={'Search Project'}
-            />
-          </Col>
-          <Col style={styles.colButtonContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                {this.isProjectModalVisible(true);}
-              }}>
-              <AntDesign style={{color: '#ceefcc'}} name={'addfolder'}
-                         size={30}/>
-            </TouchableOpacity>
-          </Col>
-        </Row>
-        < FlatList
-          data={formatData(this.state.filteredProjects, columns,
-          )
-          }
-          style={styles.container}
-          renderItem={this.renderItem}
-          numColumns={columns}
-        />
-        {this.state.addProjectPressed
-          ? <CreateProjectComponent
-            isProjectModalVisible={this.isProjectModalVisible.bind(this)}
-            addProject={this.addProject}
-            isVisible={this.state.addProjectPressed}/>
-          : null}
-      </Container>
+    if (this.state.isLoading){
+      return (
+        <View style={styles.loadingIndication}>
+          <ActivityIndicator size={100} color="#6cd166"/>
+        </View>
 
-    )
-      ;
-  };
+      );
+    } else{
+
+      return (
+        <Container>
+          <Row style={styles.rowStyle}>
+            <Col style={{width: '80%'}}>
+              <SearchBar
+                onChangeText={this.searchFunction}
+                value={this.state.search}
+                cancelIcon={true}
+                lightTheme={true}
+                round={true}
+                containerStyle={styles.searchViewContainerStyle}
+                inputContainerStyle={styles.searchViewInputContainerStyle}
+                //placeholderTextColor={'white'}
+                placeholder={'Search Project'}
+              />
+            </Col>
+            <Col style={styles.colButtonContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  {this.isProjectModalVisible(true);}
+                }}>
+                <AntDesign style={{color: '#ceefcc'}} name={'addfolder'}
+                           size={30}/>
+              </TouchableOpacity>
+            </Col>
+          </Row>
+          < FlatList
+            data={this.state.filteredProjects}//{formatData(this.state.filteredProjects, columns,
+            //)
+            //}
+            style={styles.container}
+            renderItem={this.renderItem}
+            numColumns={columns}
+          />
+          {this.state.addProjectPressed
+            ? <CreateProjectComponent
+              isProjectModalVisible={this.isProjectModalVisible.bind(this)}
+              addProject={this.addProject}
+              isVisible={this.state.addProjectPressed}/>
+            : null}
+        </Container>
+
+      );
+    }
+  }
 }
 
 const styles = StyleSheet.create({
-  rowStyle: {
-    height: 58,
-    backgroundColor: 'black',
-  },
-  colButtonContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#6cd166',
-    height: 58,
-  },
-  searchViewInputContainerStyle: {
-    backgroundColor: '#ceefcc',
-  },
-  searchViewContainerStyle: {
-    backgroundColor: '#6cd166',
-    borderBottomColor: 'transparent',
-    borderTopColor: 'transparent',
-  },
-  searchContainer: {},
-  container: {
-    flex: 1,
-    paddingTop: 5,
-    backgroundColor: '#ceefcc',
-  },
-  itemInvisible: {
-    backgroundColor: 'transparent',
-  },
-  itemText: {
-    color: '#fff',
-  },
-});
+    rowStyle: {
+      height: 58,
+      backgroundColor: 'black',
+    },
+    colButtonContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#6cd166',
+      height: 58,
+    },
+    searchViewInputContainerStyle: {
+      backgroundColor: '#ceefcc',
+    },
+    searchViewContainerStyle: {
+      backgroundColor: '#6cd166',
+      borderBottomColor: 'transparent',
+      borderTopColor: 'transparent',
+    },
+    searchContainer: {},
+    container: {
+      flex: 1,
+      paddingTop: 5,
+      backgroundColor: '#ceefcc',
+    },
+    itemInvisible: {
+      backgroundColor: 'transparent',
+    },
+    itemText: {
+      color: '#fff',
+    },
+    loadingIndication: {
+      flex: 1,
+      justifyContent: 'center',
+    },
+  })
+;
 
 export default ProjectScreen;

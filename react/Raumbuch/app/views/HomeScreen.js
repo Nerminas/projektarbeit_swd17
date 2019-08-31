@@ -6,33 +6,37 @@ import Hardware from './Hardware';
 import Tmp from './Tmp';
 
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const TabNavigator = createBottomTabNavigator(
   {
     Tab1: {
       screen: ProjectScreen,
       navigationOptions: {
-        title: 'Projects',
+        title: 'Projekte',
         tabBarIcon: ({tintColor}) => {
-          return <Icon name="home" size={30} color={tintColor}/>;
+          return <AntDesign style={{color: tintColor}} name={'home'}
+                            size={30}/>;
         },
       },
     },
     Tab2: {
       screen: Hardware,
       navigationOptions: {
-        title: 'Hardware',
+        title: 'Räume',
         tabBarIcon: ({tintColor}) => {
-          return <Icon name="memory" size={30} color={tintColor}/>;
+          return <AntDesign style={{color: tintColor}} name={'profile'}
+                            size={30}/>;
         },
       },
     },
     Tab3: {
       screen: Tmp,
       navigationOptions: {
-        title: 'Tmp',
+        title: 'Komponenten',
         tabBarIcon: ({tintColor}) => {
-          return <Icon name="wifi" size={30} color={tintColor}/>;
+          return <AntDesign style={{color: tintColor}} name={'fork'}
+                            size={30}/>;
         },
       },
     },
