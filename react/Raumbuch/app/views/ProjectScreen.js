@@ -8,13 +8,12 @@ import {
   TouchableOpacity,
   AsyncStorage,
 } from 'react-native';
-import { Col, Row, Card, CardItem, Container, Body } from 'native-base';
+import { Col, Row, Container } from 'native-base';
 import FlatListItem from '../components/FlatListItem';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import CreateProjectComponent from '../components/CreateProjectComponent';
+import ProjectDetailComponent from '../components/ProjectDetailComponent';
 
 const columns = 2;
-
 let nav;
 
 class ProjectScreen extends React.Component{
@@ -22,7 +21,9 @@ class ProjectScreen extends React.Component{
     projects: [],
     filteredProjects: [],
     search: '',
-    addProjectPressed: false,
+    projectModalPressed: false,
+    selectedProject: {},
+    modalAction: '',
     isLoading: true,
   };
 
@@ -45,10 +46,14 @@ class ProjectScreen extends React.Component{
 
   renderItem = ({item}) => {
     if (item.empty === true){
-      return <View style={[styles.item, styles.itemInvisible]}/>;
+      return <View style={styles.itemInvisible}/>;
     }
     return (
-      <FlatListItem nav={nav} item={item} columnCount={columns}/>
+      <FlatListItem
+        isProjectModalVisible={this.isProjectModalVisible.bind(this)}
+        nav={nav}
+        item={item}
+        columnCount={columns}/>
     );
   };
 
@@ -63,8 +68,24 @@ class ProjectScreen extends React.Component{
     }
   };
 
-  isProjectModalVisible = (isVisible) => {
-    this.setState({addProjectPressed: isVisible});
+  editProject = (project, oldEditKey) => {
+    this.setState({
+      projects: this.state.projects.filter((obj) => obj.key !== oldEditKey),
+      filteredProjects: this.state.filteredProjects.filter(
+        (obj) => obj.key !== oldEditKey),
+    });
+    if (project !== null){
+      this.setState({
+        projects: [...this.state.projects, project],
+        filteredProjects: [...this.state.filteredProjects, project],
+      });
+    }
+  };
+
+  isProjectModalVisible = (isVisible, action, project) => {
+    this.setState({projectModalPressed: isVisible});
+    this.setState({modalAction: action});
+    this.setState({selectedProject: project});
   };
 
   searchFunction = (searchString) => {
@@ -87,10 +108,8 @@ class ProjectScreen extends React.Component{
         <View style={styles.loadingIndication}>
           <ActivityIndicator size={100} color="#6cd166"/>
         </View>
-
       );
     } else{
-
       return (
         <Container>
           <Row style={styles.rowStyle}>
@@ -103,14 +122,13 @@ class ProjectScreen extends React.Component{
                 round={true}
                 containerStyle={styles.searchViewContainerStyle}
                 inputContainerStyle={styles.searchViewInputContainerStyle}
-                //placeholderTextColor={'white'}
                 placeholder={'Search Project'}
               />
             </Col>
             <Col style={styles.colButtonContainer}>
               <TouchableOpacity
                 onPress={() => {
-                  {this.isProjectModalVisible(true);}
+                  {this.isProjectModalVisible(true, 'add', null);}
                 }}>
                 <AntDesign style={{color: '#ceefcc'}} name={'addfolder'}
                            size={30}/>
@@ -123,11 +141,17 @@ class ProjectScreen extends React.Component{
             renderItem={this.renderItem}
             numColumns={columns}
           />
-          {this.state.addProjectPressed
-            ? <CreateProjectComponent
+          {this.state.projectModalPressed
+            ? <ProjectDetailComponent
+              title={this.state.modalAction === 'add'
+                ? 'Neues Projekt anlegen'
+                : 'Projekt ändern'}
               isProjectModalVisible={this.isProjectModalVisible.bind(this)}
+              action={this.state.modalAction}
+              project={this.state.selectedProject}
               addProject={this.addProject}
-              isVisible={this.state.addProjectPressed}/>
+              editProject={this.editProject}
+              isVisible={this.state.projectModalPressed}/>
             : null}
         </Container>
       );
@@ -154,7 +178,6 @@ const styles = StyleSheet.create({
       borderBottomColor: 'transparent',
       borderTopColor: 'transparent',
     },
-    searchContainer: {},
     container: {
       flex: 1,
       paddingTop: 5,

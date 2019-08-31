@@ -1,14 +1,22 @@
 import React from 'react';
-import { Body, Card, CardItem, Text } from 'native-base';
 import {
-  StyleSheet, TouchableOpacity,
+  Body,
+  Card,
+  CardItem,
+  Text,
+  View,
+} from 'native-base';
+import {
+  StyleSheet,
+  TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { Feather, EvilIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 let columns = 0;
 
-const FlatListItem = ({nav, item, columnCount}) => {
+const FlatListItem = ({isProjectModalVisible, nav, item, columnCount}) => {
+
   columns = columnCount;
   return (
     <TouchableWithoutFeedback onPress={p => {
@@ -17,19 +25,22 @@ const FlatListItem = ({nav, item, columnCount}) => {
       });
     }}>
       <Card style={styles.item}>
-        <CardItem header>
-          <Text>{item.name}</Text>
-          <TouchableOpacity
-            style={{marginLeft: 50}}
-            onPress={p => {console.log('Edit ' + item.name);}}>
-            <Feather name={'edit'} size={30}/>
-          </TouchableOpacity>
+        <CardItem header bordered>
+          <View style={styles.headingContainer}>
+            <Text style={styles.heading}>{item.name}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                isProjectModalVisible(true, 'edit', item);
+              }}>
+              <AntDesign style={styles.headingIcon} name={'edit'} size={30}/>
+            </TouchableOpacity>
+          </View>
         </CardItem>
         <CardItem>
-          <Body>
+          <Body style={styles.cardBody}>
             <Text>Name: {item.name}</Text>
             <Text>Kundennummer: {item.customernumber}</Text>
-            <Text>Adresse: {item.address}</Text>
+            <Text>Adresse: {item.adress}</Text>
             <Text>Telefon: {item.phone}</Text>
             <Text>eMail: {item.email}</Text>
           </Body>
@@ -41,13 +52,21 @@ const FlatListItem = ({nav, item, columnCount}) => {
 
 const styles = StyleSheet.create({
   item: {
+    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    flex: 1,
-    margin: 5,
-    borderRadius: 10,
-    height: 250,
+    height: 'auto',
   },
+  headingContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  heading: {
+    flex: 1,
+    fontSize: 20,
+  },
+  headingIcon: {},
+  headingIconContainer: {},
 });
 
 export default FlatListItem;
