@@ -1,6 +1,4 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { Icon } from 'react-native-elements';
 import ProjectScreen from './ProjectScreen';
 import Hardware from './Hardware';
 import Tmp from './Tmp';
@@ -46,7 +44,6 @@ const TabNavigator = createBottomTabNavigator(
       inactiveTintColor: 'grey',
       activeBackgroundColor: '#6cd166',
       inactiveBackgroundColor: '#ceefcc',
-
     },
   },
 );

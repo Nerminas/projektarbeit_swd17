@@ -1,6 +1,5 @@
 import React, {
   useReducer,
-  useState,
 }
   from 'react';
 import {
@@ -11,7 +10,7 @@ import {
   TextInput,
   TouchableOpacity,
   AsyncStorage,
-  Alert
+  Alert,
 } from 'react-native';
 
 const reducer = (state, action) => {
@@ -32,11 +31,9 @@ const reducer = (state, action) => {
 };
 
 const CreateProjectComponent = ({isProjectModalVisible, isVisible, addProject}) => {
-
   const [state, dispatch] = useReducer(reducer,
     {key: '', name: '', customernumber: '', adress: '', phone: '', email: ''});
-
-  const {key, name, customernumber, adress, phone, email} = state;
+  const {name, customernumber} = state;
 
   return (
     <View>
@@ -105,7 +102,7 @@ const CreateProjectComponent = ({isProjectModalVisible, isVisible, addProject}) 
                               await storeProject(state).
                                 then(() => {
                                   addProject(state);
-                                  isProjectModalVisible(false)
+                                  isProjectModalVisible(false);
                                 });
                             }
                           });
@@ -123,9 +120,9 @@ const CreateProjectComponent = ({isProjectModalVisible, isVisible, addProject}) 
 const validateEntry = async(key) => {
   let valid = false;
   if (key == null || key.length <= 0){
-    Alert.alert('Fehler','Kundennummer muss gesetzt sein', [
-      {text: 'OK'}
-    ],{cancelable:false});
+    Alert.alert('Fehler', 'Kundennummer muss gesetzt sein', [
+      {text: 'OK'},
+    ], {cancelable: false});
     console.log('Customernumber has to be set');
   } else{
     await loadProject(key).then((item) => {
@@ -134,9 +131,11 @@ const validateEntry = async(key) => {
         console.log(
           'Store not valid. Value already exists for key: ' + key + ': ' +
           item);
-        Alert.alert('Fehler','Es existiert bereits ein Projekt mit der Kundennummer '+ key + '.', [
-          {text: 'OK'}
-        ],{cancelable:false});
+        Alert.alert('Fehler',
+          'Es existiert bereits ein Projekt mit der Kundennummer ' + key + '.',
+          [
+            {text: 'OK'},
+          ], {cancelable: false});
       }
     });
   }
@@ -148,7 +147,7 @@ const storeProject = async(project) => {
   console.log('Going to Store key: ' + project.customernumber + '\nValue: ' +
     projectString);
   await AsyncStorage.setItem(project.customernumber, projectString).
-    then((item) => {
+    then(() => {
       console.log(
         'Saved key: ' + project.customernumber + ' value: ' + projectString);
     }).
@@ -164,8 +163,7 @@ const loadProject = async(key) => {
     then((item) => {
       console.log('Found entry for key: ' + key + '. Entry: ' + item);
       storedProject = item;
-    }).
-    catch(
+    }).catch(
       () => {console.log('Load of project:' + key + ' was not possible.');});
   return storedProject;
 };

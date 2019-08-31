@@ -14,26 +14,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import CreateProjectComponent from '../components/CreateProjectComponent';
 
 const columns = 2;
-const allLocalProjects = [];
 
 let nav;
-
-const formatData = (data, numColumns) => {
-  const numberOfFullRows = Math.floor(data.length / numColumns);
-
-  let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
-  while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !==
-  0){
-    data.push({key: `blank-${numberOfElementsLastRow}`, empty: true});
-    numberOfElementsLastRow++;
-  }
-
-  return data;
-};
-
-const loadAllProjects = async() => {
-
-};
 
 class ProjectScreen extends React.Component{
   state = {
@@ -45,27 +27,23 @@ class ProjectScreen extends React.Component{
   };
 
   componentDidMount(){
-    loadAllProjects().then(() => {
-        AsyncStorage.getAllKeys().then((keys) => {
-          keys.map(async(key) => {
-            await AsyncStorage.getItem(key).then((item) => {
-              //allLocalProjects.push(JSON.parse(item));
-              this.setState(
-                {projects: [...this.state.projects, JSON.parse(item)]});
-              this.setState({
-                filteredProjects: [
-                  ...this.state.filteredProjects,
-                  JSON.parse(item)],
-              });
-            });
+    AsyncStorage.getAllKeys().then((keys) => {
+      keys.map(async(key) => {
+        await AsyncStorage.getItem(key).then((item) => {
+          this.setState(
+            {projects: [...this.state.projects, JSON.parse(item)]});
+          this.setState({
+            filteredProjects: [
+              ...this.state.filteredProjects,
+              JSON.parse(item)],
           });
         });
-        this.setState({isLoading: false});
-      },
-    );
+      });
+    });
+    this.setState({isLoading: false});
   };
 
-  renderItem = ({item, index}) => {
+  renderItem = ({item}) => {
     if (item.empty === true){
       return <View style={[styles.item, styles.itemInvisible]}/>;
     }
@@ -140,9 +118,7 @@ class ProjectScreen extends React.Component{
             </Col>
           </Row>
           < FlatList
-            data={this.state.filteredProjects}//{formatData(this.state.filteredProjects, columns,
-            //)
-            //}
+            data={this.state.filteredProjects}
             style={styles.container}
             renderItem={this.renderItem}
             numColumns={columns}
@@ -154,7 +130,6 @@ class ProjectScreen extends React.Component{
               isVisible={this.state.addProjectPressed}/>
             : null}
         </Container>
-
       );
     }
   }

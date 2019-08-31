@@ -9,8 +9,7 @@ const App = () => {
       <StatusbarComponent/>
       <HomeScreen/>
     </View>
-  )
-    ;
+  );
 };
 
 export default App;
