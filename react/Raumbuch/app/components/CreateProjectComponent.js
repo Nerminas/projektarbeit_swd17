@@ -1,4 +1,8 @@
-import React, { Fragment, useState, useReducer } from 'react';
+import React, {
+  useReducer,
+  useState,
+}
+  from 'react';
 import {
   Text,
   View,
@@ -6,16 +10,16 @@ import {
   Modal,
   TextInput,
   TouchableOpacity,
-  Keyboard,
-  StatusBar,
+  AsyncStorage,
+  Alert
 } from 'react-native';
 
 const reducer = (state, action) => {
   switch (action.type){
     case 'name':
       return {...state, name: action.payload};
-    case 'customername':
-      return {...state, customername: action.payload};
+    case 'customernumber':
+      return {...state, customernumber: action.payload};
     case 'adress':
       return {...state, adress: action.payload};
     case 'phone':
@@ -28,17 +32,12 @@ const reducer = (state, action) => {
 };
 
 const CreateProjectComponent = ({isProjectModalVisible, isVisible}) => {
-  console.log('test');
 
   const [state, dispatch] = useReducer(reducer,
-    {name: '', customername: '', adress: '', phone: '', email: ''});
+    {name: '', customernumber: '', adress: '', phone: '', email: ''});
+  const [storedProject, setStoredProject] = useState('');
 
-  const {name, customername, adress, phone, email} = state;
-  /*const [name, setName] = useState('');
-   const [customername, setCustomername] = useState('');
-   const [adress, setAdress] = useState('');
-   const [phone, setPhone] = useState('');
-   const [email, setEmail] = useState('');*/
+  const {name, customernumber, adress, phone, email} = state;
 
   return (
     <View>
@@ -66,7 +65,7 @@ const CreateProjectComponent = ({isProjectModalVisible, isVisible}) => {
               placeholder="Kundennummer"
               maxLength={30}
               onChangeText={input => {
-                dispatch({type: 'customername', payload: input});
+                dispatch({type: 'customernumber', payload: input});
               }}
             />
             <TextInput
@@ -100,16 +99,76 @@ const CreateProjectComponent = ({isProjectModalVisible, isVisible}) => {
               </TouchableOpacity>
               <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}
-                      onPress={() => console.log(state)}>Speichern</Text>
+                      onPress={async() => {
+                        await validateEntry(customernumber).
+                          then(async(item) => {
+                            if (item){
+                              await storeProject(state).
+                                then(() => isProjectModalVisible(false));
+                            }
+                          });
+                      }}>Speichern</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
-
       </Modal>
     </View>
   )
     ;
+};
+
+const validateEntry = async(key) => {
+  let valid = false;
+  if (key == null || key.length <= 0){
+    Alert.alert('Fehler','Kundennummer muss gesetzt sein', [
+      {text: 'OK'}
+    ],{cancelable:false});
+    console.log('Customernumber has to be set');
+  } else{
+    await loadProject(key).then((item) => {
+      valid = item === null;
+      if (valid){
+        console.log(
+          'Not entry found for key: ' + key + '. Going to store data.');
+      } else{
+        console.log(
+          'Store not valid. Value already exists for key: ' + key + ': ' +
+          item);
+        Alert.alert('Fehler','Es existiert bereits ein Projekt mit der Kundennummer '+ key + '.', [
+          {text: 'OK'}
+        ],{cancelable:false});
+      }
+    });
+  }
+  return valid;
+};
+
+const storeProject = async(project) => {
+  let projectString = JSON.stringify(project);
+  console.log('Going to Store key: ' + project.customernumber + '\nValue: ' +
+    projectString);
+  await AsyncStorage.setItem(project.customernumber, projectString).
+    then((item) => {
+      console.log(
+        'Saved key: ' + project.customernumber + ' value: ' + projectString);
+    }).
+    catch(() => {
+        console.log('Storage of project:' + projectString + ' was not possible.');
+      },
+    );
+};
+
+const loadProject = async(key) => {
+  let storedProject = null;
+  await AsyncStorage.getItem(key).
+    then((item) => {
+      console.log('Found entry for key: ' + key + '. Entry: ' + item);
+      storedProject = item;
+    }).
+    catch(
+      () => {console.log('Load of project:' + key + ' was not possible.');});
+  return storedProject;
 };
 
 const styles = StyleSheet.create({
