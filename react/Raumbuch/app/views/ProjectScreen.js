@@ -57,6 +57,10 @@ class ProjectScreen extends React.Component{
     );
   };
 
+  formatData = (projects) => {
+    return projects.sort((a, b) => (a.name > b.name) ? 1 : -1);
+  };
+
   addProject = (project) => {
     this.setState({
       projects: [...this.state.projects, project],
@@ -136,7 +140,7 @@ class ProjectScreen extends React.Component{
             </Col>
           </Row>
           < FlatList
-            data={this.state.filteredProjects}
+            data={this.formatData(this.state.filteredProjects)}
             style={styles.container}
             renderItem={this.renderItem}
             numColumns={columns}
