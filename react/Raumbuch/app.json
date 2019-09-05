@@ -4,6 +4,9 @@
     "slug": "Raumbuch",
     "privacy": "public",
     "sdkVersion": "34.0.0",
+    "android": {
+      "package": "com.smartlife.raumbuch"
+    },
     "platforms": [
       "ios",
       "android"

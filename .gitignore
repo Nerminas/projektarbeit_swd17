@@ -1,5 +1,10 @@
 # Tutorials
 react/tutorial/*
+flutter/animation/*
+flutter/login_bloc/*
+flutter/login_stateful/*
+flutter/news/*
+flutter/pics/*
 
 # General
 .DS_Store

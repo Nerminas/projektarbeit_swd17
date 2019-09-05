@@ -126,7 +126,7 @@ class ProjectScreen extends React.Component{
                 round={true}
                 containerStyle={styles.searchViewContainerStyle}
                 inputContainerStyle={styles.searchViewInputContainerStyle}
-                placeholder={'Search Project'}
+                placeholder={'Projekt suchen'}
               />
             </Col>
             <Col style={styles.colButtonContainer}>
