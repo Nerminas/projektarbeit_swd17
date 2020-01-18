@@ -17,7 +17,7 @@ Flutter ist Googles modernes Entwicklungs-Kit, das entwickelt wurde, um mobile A
 
 Installations Guide: [Flutter.io](https://flutter.dev/docs/get-started/install/macos)
 
-Die Installation muss gemäß des Offiziellen Guides durchgeführt werdne um ein Flutter Projekt loka auf dem Rechner initialisieren zu können.
+Die Installation muss gemäß des Offiziellen Guides durchgeführt werdne um ein Flutter Projekt lokal auf dem Rechner initialisieren zu können.
 Die wichtigsten Punkte:
 
 - SDK Entpacken (z.B.: nach ~/development/) 
@@ -26,8 +26,18 @@ Die wichtigsten Punkte:
   ```
 - PATH Variable setzten
   ```console
-  eexport PATH=~/development/flutter/bin:"$PATH"
+  export PATH=~/development/flutter/bin:"$PATH"
   ```
+
+### 1.2 Windows
+
+Installations Guide: [Fluttio.io](https://flutter.dev/docs/get-started/install/windows)
+
+Flutter SDK herunterladen und installieren, wichtig hierbei ist das die SDK nicht in einem Ordner der Admin rechte benötigt installiert wird (z.B.: C:\Programme\flutter).
+
+Im Anschluss muss Pfad noch zur Umgebungsvariable hinzugefügt werden.
+Hierfür muss der `flutter\bin` Pfad mit einem `;` getrennt ans Ende des Pfades angehängt werden.
+
 
 ### 1.1.1 Android Entwicklung
 Hierwürd wird [Android Studio](https://developer.android.com/studio) installiert. Einfach mithilfe von "Download Android Studio" herunterladen und installieren.

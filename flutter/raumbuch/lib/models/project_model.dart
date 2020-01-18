@@ -1,16 +1,16 @@
 class ProjectModel {
-  String id;
   String name;
   String customernumber;
-  String address;
+  String adress;
   String phone;
   String email;
 
+  ProjectModel(this.name, this.customernumber, this.adress, this.phone, this.email);
+
   ProjectModel.fromJson(Map<String, dynamic> parsedJson)
-      : id = parsedJson['id'],
-        name = parsedJson['name'],
+      : name = parsedJson['name'],
         customernumber = parsedJson['customernumber'],
-        address = parsedJson['address'],
+        adress = parsedJson['adress'],
         phone = parsedJson['phone'],
         email = parsedJson['email'];
 }
