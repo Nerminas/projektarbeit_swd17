@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Raumbuch.Views.EditProjectPage"
+             Title="Projekt ändern">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Abbrechen" Clicked="Cancel_Clicked" />
+        <ToolbarItem Text="Speichern" Clicked="Save_Clicked" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="15">
+            <Label Text="Name" FontSize="Medium" />
+            <Entry Text="{Binding Project.Name}" d:Text="name" FontSize="Small"/>
+            <Label Text="Customernumber" FontSize="Medium" />
+            <Entry Text="{Binding Project.Customernumber}" d:Text="customernumber" FontSize="Small" Margin="0" />
+            <Label Text="Adress" FontSize="Medium" />
+            <Entry Text="{Binding Project.Adress}" d:Text="adress" FontSize="Small"/>
+            <Label Text="Phone" FontSize="Medium" />
+            <Entry Text="{Binding Project.Phone}" d:Text="phone" FontSize="Small"/>
+            <Label Text="Email" FontSize="Medium" />
+            <Entry Text="{Binding Project.Email}" d:Text="email" FontSize="Small"/>
+        </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>
